@@ -45,7 +45,7 @@ float _DeltaTime;
 [numthreads(1,1,1)]
 void Awake( uint id : SV_DispatchThreadID )
 {
-	float angle = TWO_PI - id / 3.0 * TWO_PI;
+	float angle = TWO_PI - id / 4.0 * TWO_PI;
 	float4 rotation = QuaternionAngleAxis( angle, float3( 0, 0, 1 ) );
 	float3 vertex = QuaternionRotateVector( rotation, float3( 0, 0.5, 0 ) );
 	_Buffer[id] = float4( vertex, 1 );
@@ -59,7 +59,7 @@ void Update( uint id : SV_DispatchThreadID )
 	float3 vertex = _Buffer[id].xyz;
 	
 	// Compute and apply delta rotation.
-	float4 deltaRotation = QuaternionAngleAxis( TWO_PI / 8.0 * _DeltaTime, float3( 0, 0, 1 ) );
+	float4 deltaRotation = QuaternionAngleAxis( TWO_PI / 80.0 * _DeltaTime, float3( 0, 0, 1 ) );
 	vertex = QuaternionRotateVector( deltaRotation, vertex );
 
 	// Write.

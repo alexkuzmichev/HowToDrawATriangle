@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class DrawProceduralIndirectNowGraphicsBufferIndiciesDemo : MonoBehaviour
 {
-	const int vertCount = 3;
+	const int vertCount = 4;
 
 	ComputeBuffer _buffer;
 	ComputeBuffer _drawArgsBuffer;
@@ -30,9 +30,9 @@ public class DrawProceduralIndirectNowGraphicsBufferIndiciesDemo : MonoBehaviour
 
 		_buffer = new ComputeBuffer( vertCount, sizeof(float)*4 );
 		_drawArgsBuffer = new ComputeBuffer( 4, sizeof( int ), ComputeBufferType.IndirectArguments );  // vertex count per instance, instance count, start vertex location, and start instance location
-		_drawArgsBuffer.SetData( new int[] { vertCount, 1, 0, 0 } );
-		_indexBuffer = new GraphicsBuffer( GraphicsBuffer.Target.Index, 3, sizeof( short ) );
-		_indexBuffer.SetData( new short[] { 0, 1, 2 } );
+		_drawArgsBuffer.SetData( new int[] { 6, 1, 0, 0 } );//indices count
+		_indexBuffer = new GraphicsBuffer( GraphicsBuffer.Target.Index, 6, sizeof( short ) );
+		_indexBuffer.SetData( new short[] { 0, 1, 2, 0, 2, 3   } );
 
 		_computeShader = Instantiate( Resources.Load<ComputeShader>( GetType().Name ) );
 		_awakeKernel = _computeShader.FindKernel( "Awake" );
@@ -63,6 +63,7 @@ public class DrawProceduralIndirectNowGraphicsBufferIndiciesDemo : MonoBehaviour
 	void OnRenderObject()
 	{
 		_material.SetPass( 0 );
+		print(_indexBuffer);
 		Graphics.DrawProceduralIndirectNow( MeshTopology.Triangles, _indexBuffer, _drawArgsBuffer );
 	}
 }
